@@ -7,3 +7,14 @@
     justify-content: center;
     align-items: center;
 }
+
+.restartBtn, 
+.restoreBtn{
+    width: 200px;
+    height: 35px;
+    margin-bottom: 25px;
+    cursor: pointer;
+    color: black;
+    outline: none;
+    
+}
