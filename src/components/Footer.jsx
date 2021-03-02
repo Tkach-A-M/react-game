@@ -28,6 +28,7 @@ const Footer = () => {
 
     return (
         <footer className="footer">
+            
             { GHLink() }
             { RSReactLink() }
             { YTLink() }

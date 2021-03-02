@@ -5,7 +5,8 @@
   "dependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "use-sound": "^2.0.1"
   },
   "devDependencies": {},
   "scripts": {
