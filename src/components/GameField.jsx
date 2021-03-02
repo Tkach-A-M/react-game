@@ -2,8 +2,6 @@ import React from 'react';
 import './GameField.css';
 import Square from './Square';
 
-
-
 const GameField = ({squares, click}) => {
     return(
         <div className="gameField">

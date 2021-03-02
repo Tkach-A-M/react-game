@@ -12,7 +12,7 @@
 .restoreBtn{
     width: 200px;
     height: 35px;
-    margin-bottom: 25px;
+    margin: 15px;
     cursor: pointer;
     color: black;
     outline: none;
