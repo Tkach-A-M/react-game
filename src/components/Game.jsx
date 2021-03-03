@@ -3,6 +3,8 @@ import GameField from './GameField';
 // import Sounds from './sounds';
 import { checkWinner } from '../WinCombinations';
 import './Game.css';
+import InfoWindow from './InfoWindow';
+
 import Footer from './Footer';
 
 const Game = () => {
@@ -11,8 +13,10 @@ const Game = () => {
     const [clickCount, setClickCount] = useState(0);
     const [soundPlay, setSoundPlay] = useState(true);
     const [musicPlay, setMusicPlay] = useState(true);
+    const [infoWindowActive, setInfoWindowActive] = useState(false);
     const winner = checkWinner(board);
     
+    console.log(winner);    
 
     const xSound = new Audio('https://zvukipro.com/uploads/files/2020-07/1593590712_mouth_foley_puff_09.mp3');
     const zeroSound = new Audio('https://zvukipro.com/uploads/files/2020-02/1581948879_583b80435257f33.mp3');
@@ -25,9 +29,10 @@ const Game = () => {
 
         // игра закончилась или ячейка занята
         if(winner || copyBoard[index]){
-            console.log(winner);
             return;
         }
+
+        console.log(winner);
 
         // чей ход
         copyBoard[index] = xIsNext ? 'X' : '0';
@@ -87,15 +92,35 @@ const Game = () => {
     }
 
 
+    const toggleFullscreen = () => {
+        const isFullscreen = document.fullscreenElement 
+            || document.webkitFullscreenElement
+            || document.mozFullscreenElement
+            || document.msFullscreenElement;
+
+        if(isFullscreen){
+            document.exitFullscreen();
+        }
+        else{
+            document.documentElement.requestFullscreen().catch(console.log);
+        }
+    }
+
+    const fullscreenBtn = () => { 
+        return (
+            <button className='fullscreenBtn' onClick={ toggleFullscreen }  title='Shift + F'>1
+            </button>
+        )
+    }
+
     const toggleSound = () => {
         setSoundPlay(!soundPlay);
-        console.log('sound switched')
     }
 
     const soundBtn = () => {
         return (
             <button className='soundBtn' onClick={ toggleSound } title='Shift + S'>
-                MS
+                 2
             </button>
         )
     }
@@ -113,46 +138,30 @@ const Game = () => {
                         backMusic.muted = true;
                     }
                 }
-            }>
-                MM
-            </button>
-        )
-    }
-
-    const toggleFullscreen = () => {
-        const isFullscreen = document.fullscreenElement 
-            || document.webkitFullscreenElement
-            || document.mozFullscreenElement
-            || document.msFullscreenElement;
-
-        if(isFullscreen){
-            document.exitFullscreen();
-        }
-        else{
-            document.documentElement.requestFullscreen().catch(console.log);
-        }
-    }
-
-    const fullscreenBtn = () => { 
-        return (
-            <button className='fullscreenBtn' onClick={ toggleFullscreen } title='Shift + F'>
-                FS
+            } title='Shift + M'>
+                3
             </button>
         )
     }
 
     const settingsBtn = () => {
         return (
-            <button className='settingsBtn'>
-                S
+            <button className='settingsBtn' title='Shift + T'>
+                4
             </button>
         )
     }
 
+    const showCombinations = () => {
+        console.log(infoWindowActive);
+        setInfoWindowActive(true);
+        console.log(infoWindowActive);
+    }
+
     const combinationsInfoBtn = () => {
         return (
-            <button className='combinationsInfoBtn'>
-                I
+            <button className='combinationsInfoBtn' onClick={ showCombinations } title='Shift + I'>
+               5
             </button>
         )
     }
@@ -160,13 +169,16 @@ const Game = () => {
 
     // hotkeys
     document.onkeydown = event => {
-        if(event.key == 'Shift'){
+        if(event.key === 'Shift'){
             document.onkeyup = event => {
                 const key = event.keyCode;
                 
                 switch (key) {
                     case 70:
                         toggleFullscreen();
+                        break;
+                    case 73:
+                        showCombinations();
                         break;
                     case 78:
                         restartGameFnc();
@@ -184,11 +196,16 @@ const Game = () => {
         }
     }
 
+    const showStatus = () => {
+        
+    }
+
     return(
         <div className='wrapper'>
+            <InfoWindow showInfo={ infoWindowActive } setShowInfo={ setInfoWindowActive }/>
             {/* { backMusic.play() } */}
             <p>
-                { winner ? 'Победил ' + winner : 'Сейчас ходит ' + ( xIsNext ? 'x' : '0' ) }
+                {/* { winner ? 'Победил ' + winner : 'Сейчас ходит ' + ( xIsNext ? 'x' : '0' ) } */}
             </p>
             <p>
                 Ходов: { clickCount }
@@ -204,7 +221,7 @@ const Game = () => {
             <GameField squares={board} click={handleClick}/>
             { restartGame() }
             { restoreGame() }
-            <Footer/>
+            <Footer />
 
         </div>
     )

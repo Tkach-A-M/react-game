@@ -13,7 +13,7 @@ export function checkWinner(squares) {
     for (let i = 0; i< winLines.length; i++){
         const [a, b, c] = winLines[i];
         if(squares[a] && squares[a] === squares[b] && squares[b] === squares[c]){
-            console.log(squares[a]);
+            // console.log(squares[a]);
             return squares[a];
         }
     }
