@@ -15,27 +15,63 @@ const Game = () => {
     const [musicPlay, setMusicPlay] = useState(true);
     const [infoWindowActive, setInfoWindowActive] = useState(false);
     const winner = checkWinner(board);
-    
-    console.log(winner);    
+    const [xWinCount, setXWinCount] = useState(0);
+    const [zeroWinCount, setZeroWinCount] = useState(0);
+    const [drawCount, setDrawCount] = useState(0);
+    const [result, setResult] = useState('');
 
     const xSound = new Audio('https://zvukipro.com/uploads/files/2020-07/1593590712_mouth_foley_puff_09.mp3');
     const zeroSound = new Audio('https://zvukipro.com/uploads/files/2020-02/1581948879_583b80435257f33.mp3');
     const backMusic = new Audio('https://zvukipro.com/uploads/files/2020-05/1588412913_jeremy-blake-powerup.mp3');
 
     
+
+    if(winner && clickCount === 10){
+        return;
+    }
+    else{
+        if(!winner && clickCount === 9){
+           console.log('Ничья');
+           setDrawCount(drawCount);
+           return;
+        }
+        else{
+            // console.log(winner)
+            if(winner === '0'){
+                console.log(winner);
+                setZeroWinCount(zeroWinCount + 1);
+                return;
+            }
+            if(winner === 'X'){
+                console.log(winner);
+                setXWinCount(xWinCount + 1);
+                return;
+            }
+        }
+    }
+
+
     // обработка клика
     const handleClick = (index) =>{
         const copyBoard = [...board];
 
         // игра закончилась или ячейка занята
         if(winner || copyBoard[index]){
+            console.log(index);
             return;
         }
 
         console.log(winner);
 
-        // чей ход
+        // записываем данные в ячейку
         copyBoard[index] = xIsNext ? 'X' : '0';
+
+        if(xIsNext){
+            document.querySelectorAll('.square')[index].classList.add('xFull');
+        }
+        else{
+            document.querySelectorAll('.square')[index].classList.add('zeroFull');
+        }
 
         if(soundPlay){
             if(xIsNext){
@@ -64,7 +100,25 @@ const Game = () => {
         setBoard(Array(9).fill(null));
         setXIsNext(true);
         setClickCount(0);
-        localStorage.clear();  
+        localStorage.clear();
+        const squares = document.querySelectorAll('.square');
+        for(let i = 0; i < squares.length; i++){
+            squares[i].classList.remove('xFull');
+            squares[i].classList.remove('zeroFull');
+        }
+    }
+
+    const infoBlock = () => {
+        return (
+            <div className='infoBlock'>
+                <p><b>Shift + N</b> начать игру заново</p>
+                <p><b>Shift + R</b> восстановить игру</p>
+                <p><b>Shift + F</b> полноэкранный режим</p>
+                <p><b>Shift + S</b> отключить звуки</p>
+                <p><b>Shift + M</b> отключить музыку</p>
+                <p><b>Shift + I</b> показать комбинации</p>
+            </div>
+        )
     }
 
     const restartGame = () => {
@@ -80,17 +134,46 @@ const Game = () => {
             if(gameData){
                 setBoard(gameData.field);
                 setClickCount(gameData.moves);
+                const squares = document.querySelectorAll('.square');
+                for(let i = 0; i < squares.length; i++){
+                    if(squares[i].innerText === 'X'){
+                        console.log('X');
+                        squares[i].classList.add('xFull');
+                    }
+                    if(squares[i].innerHTML === '0'){
+                        console.log('0')
+                        squares[i].classList.add('zeroFull');
+                    }
+                }
             }
     }
     
     const restoreGame = () => {
         return (
-            <button className='restoreBtn' onClick={ restoreGameFnc } title='Shift + R'>
+            <button className='restoreBtn' onClick={ //restoreGameFnc 
+                () => {
+                    const gameData = JSON.parse(localStorage.getItem('gameData'));
+                        if(gameData){
+                            setBoard(gameData.field);
+                            setClickCount(gameData.moves);
+                            const squares = document.querySelectorAll('.square');
+                            for(let i = 0; i < squares.length; i++){
+                                if(squares[i].innerText === 'X'){
+                                    console.log('X');
+                                    squares[i].classList.add('xFull');
+                                }
+                                if(squares[i].innerHTML === '0'){
+                                    console.log('0')
+                                    squares[i].classList.add('zeroFull');
+                                }
+                            }
+                        }
+                    }
+            } title='Shift + R'>
                 Продолжить
             </button>
         )
     }
-
 
     const toggleFullscreen = () => {
         const isFullscreen = document.fullscreenElement 
@@ -108,7 +191,8 @@ const Game = () => {
 
     const fullscreenBtn = () => { 
         return (
-            <button className='fullscreenBtn' onClick={ toggleFullscreen }  title='Shift + F'>1
+            <button className='fullscreenBtn' onClick={ toggleFullscreen }  title='Shift + F'>
+                1
             </button>
         )
     }
@@ -196,16 +280,16 @@ const Game = () => {
         }
     }
 
-    const showStatus = () => {
-        
-    }
+
+
 
     return(
         <div className='wrapper'>
-            <InfoWindow showInfo={ infoWindowActive } setShowInfo={ setInfoWindowActive }/>
+            {/* <InfoWindow showInfo={ infoWindowActive } setShowInfo={ setInfoWindowActive }/> */}
+            { infoBlock() }
             {/* { backMusic.play() } */}
             <p>
-                {/* { winner ? 'Победил ' + winner : 'Сейчас ходит ' + ( xIsNext ? 'x' : '0' ) } */}
+                { winner ? 'Победил ' + winner : 'Сейчас ходит ' + ( xIsNext ? 'x' : '0' ) }
             </p>
             <p>
                 Ходов: { clickCount }
@@ -214,13 +298,15 @@ const Game = () => {
                 { fullscreenBtn() }
                 { soundBtn() }
                 { musicBtn() }
-                { settingsBtn() }
+                {/* { settingsBtn() } */}
                 { combinationsInfoBtn() }
             </div>
             
             <GameField squares={board} click={handleClick}/>
             { restartGame() }
             { restoreGame() }
+            {/* { showStatistic() } */}
+            <p>{ 'X выиграл ' + xWinCount + ' раз. 0 Вы играл ' + zeroWinCount + ' раз. Ничьих: ' + drawCount }</p>
             <Footer />
 
         </div>

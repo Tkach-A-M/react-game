@@ -1,3 +1,5 @@
+
+
 .square{
     width: 100px;
     height: 100px;
@@ -14,4 +16,25 @@
 .square:hover{
     background: #fefefe;
     transition: 0.5s all ease-out;
+}
+
+.xFull{
+    color: white;
+    transition: 0.7s all ease-in;
+    background: rgb(138, 36, 221);
+}
+
+.xFull:hover{
+    transition: 0.6s ease-out;
+    background: rgb(160, 99, 209);
+}
+
+.zeroFull{
+    transition: 0.7s all ease-in;
+    background: rgb(24, 204, 171);
+}
+
+.zeroFull:hover{
+    transition: 0.7s all ease-out;
+    background: rgb(59, 216, 187);
 }
