@@ -1,0 +1,74 @@
+
+
+.wrapper{
+    min-height: 100vh;
+    width: 100%;
+    background-color: #535353;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper p{
+    font-size: 20px;
+}
+
+button{
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: transparent;
+}
+
+.fullscreenBtn{
+    background: url('https://cdn1.iconfinder.com/data/icons/material-core/14/fullscreen-32.png') no-repeat white 50% 50%;
+}
+
+.soundBtn{
+    background: url('https://cdn4.iconfinder.com/data/icons/essential-app-2/16/volume-sound-speaker-lound-32.png') no-repeat white 50% 50%;
+}
+
+.muteSound{
+    background: url('https://cdn4.iconfinder.com/data/icons/essential-app-2/16/volume-sound-speaker-mute-32.png') no-repeat white 50% 50%;
+}
+
+.musicBtn{
+    background: url('https://cdn3.iconfinder.com/data/icons/glypho-free/64/music-note-sound-32.png') no-repeat white 50% 50%;
+}
+
+.muteMusic{
+    background: url('https://icon-icons.com/icons2/2248/PNG/32/music_off_icon_135370.png') no-repeat white 50% 50%;
+}
+
+.settingsBtn{
+    background: url('https://cdn0.iconfinder.com/data/icons/google-material-design-3-0/48/ic_settings_48px-32.png') no-repeat white 50% 50%;
+}
+
+.combinationsInfoBtn{
+    background: url('https://cdn0.iconfinder.com/data/icons/mobile-basic-vol-1/32/Information_Circle-32.png') no-repeat white 50% 50%;
+}
+
+.restartBtn, 
+.restoreBtn{
+    width: 200px;
+    height: 35px;
+    margin: 15px;
+    cursor: pointer;
+    color: black;
+    outline: none;   
+}
+
+.controls button{
+    width: 48px;
+    height: 48px;
+    margin: 7px;
+}
+
+.infoBlock{
+    position: absolute;
+    top: 10px;
+    background-color: whitesmoke;
+    padding: 20px;
+    border-radius: 5px;
+}
